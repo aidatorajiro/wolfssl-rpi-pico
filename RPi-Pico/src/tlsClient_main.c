@@ -249,7 +249,14 @@ void lwip_example_app_platform_assert(const char *msg, int line, const char *fil
 #include <time.h>
 time_t myTime(time_t *t)
 {
-    time_t tret = (time_t)ntp_time;
+    time_t tret;
+    
+    if (ntp_time != 0) {
+        tret = (time_t)ntp_time;
+    } else {
+        tret = 1717859260;
+    }
+
     if (t != NULL) {
         *t = tret;
     }
