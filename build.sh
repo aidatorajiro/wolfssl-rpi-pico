@@ -1,6 +1,6 @@
 . credentials/credentials.sh
 
-rm -rf build
+# rm -rf build
 mkdir build
 cd build
 export WOLFSSL_ROOT=$(pwd)/../wolfssl
