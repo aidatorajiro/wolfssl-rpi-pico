@@ -1,0 +1,1 @@
+openssl s_server -accept 0.0.0.0:11111 -CAfile credentials/certs/ca-rsa.crt -cert credentials/certs/server-rsa.crt -key credentials/certs/server-rsa.key
