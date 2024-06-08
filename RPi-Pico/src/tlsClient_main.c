@@ -50,6 +50,51 @@ int wolf_cb_TCPwrite(WOLFSSL *ssl, const unsigned char *buff, long unsigned int 
     return ret;
 }
 
+unsigned int ntp_time = 0;
+
+void ntp_sync(void)
+{
+    unsigned char ntp_req[48] = "\x1b\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0\0";
+
+    unsigned int ntp_res[12] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+    
+    int i;
+    int ret;
+
+    SOCKET_T sock;
+    struct sockaddr_in servAddr;
+
+    sock = socket();
+    if (!sock)
+    {
+        printf("ERROR:wolf_TCPsocket()\n");
+        return;
+    }
+
+    memset(&servAddr, 0, sizeof(servAddr));
+    servAddr.sin_family = AF_INET;           /* using IPv4      */
+    servAddr.sin_port = htons(123); /* on DEFAULT_PORT */
+
+    if (inet_pton(AF_INET, "162.159.200.1", &servAddr.sin_addr) != 1) {
+        fprintf(stderr, "ERROR: invalid address\n");
+        goto exit;
+    }
+
+    if (connect(sock,(struct sockaddr*) &servAddr, sizeof(servAddr)) != WOLF_SUCCESS) {
+        printf("ERROR:wolf_TCPconnect()\n");
+        goto exit;
+    }
+
+    send(sock, (unsigned char *) &ntp_req, sizeof(ntp_req));
+    recv(sock, (unsigned char *) &ntp_res, sizeof(ntp_res));
+
+    ntp_time = ntp_res[10] - 2208988800;
+
+exit:
+    if (sock)
+        free(sock);              /* Close the connection to the server   */
+}
+
 int wolf_cb_TCPread(WOLFSSL *ssl, unsigned char *buff, long unsigned int len, void *ctx)
 {
     (void)ssl;
@@ -85,6 +130,12 @@ void tlsClient_test(void)
         printf("ERROR:wolfSSL_CTX_new()\n");
         return;
     }
+
+    // printf("Sync Time.\n");
+
+    // ntp_sync();
+
+    // printf("Current Time: %d\n", ntp_time);
 
     printf("Load CA Cert.\n");
 
@@ -198,6 +249,9 @@ void lwip_example_app_platform_assert(const char *msg, int line, const char *fil
 #include <time.h>
 time_t myTime(time_t *t)
 {
-    *t = (((2023 - 1970) * 365 + (8 * 30)) * 24 * 60 * 60);
-    return *t;
+    time_t tret = (time_t)ntp_time;
+    if (t != NULL) {
+        *t = tret;
+    }
+    return tret;
 }

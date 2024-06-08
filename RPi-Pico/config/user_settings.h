@@ -31,8 +31,6 @@
 
 #define WOLFSSL_AUTOSAR
 
-#define WOLFSSL_BEFORE_DATE_CLOCK_SKEW 1717823599
-
 #ifdef __cplusplus
 extern "C"
 {
@@ -354,7 +352,7 @@ extern time_t myTime(time_t *);
 
 #undef DEBUG_WOLFSSL
 #undef NO_ERROR_STRINGS
-#if 0
+#if 1
 #define DEBUG_WOLFSSL
 #else
 #if 0
