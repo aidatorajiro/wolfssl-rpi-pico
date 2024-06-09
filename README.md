@@ -13,8 +13,6 @@ for others,
 
 ## build config for wolfssl
 
-1. apply patch `wolfssl-patch-benchmark.patch` in wolfssl  
-   `cd woldssl; git reset --hard; patch -p1 ../wolfssl-patch-benchmark.patch`
 3. `mkdir credentials; cd credentials; mkdir certs wolfssl; cd ..`
 4. in `credentials` folder, create `credentials.sh` as follows:
    ```bash
