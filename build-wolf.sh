@@ -1,8 +1,8 @@
 . credentials/credentials.sh
 
 # rm -rf build
-mkdir build
-cd build
+mkdir build-wolf
+cd build-wolf
 export WOLFSSL_ROOT=$(pwd)/../wolfssl
 export PICO_SDK_PATH=$(pwd)/../pico-sdk
 export PICO_EXTRAS_PATH=$(pwd)/../pico-extras
