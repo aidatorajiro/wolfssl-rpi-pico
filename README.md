@@ -13,7 +13,7 @@ for others,
 
 ## build config for wolfssl
 
-3. `mkdir credentials; cd credentials; mkdir certs wolfssl; cd ..`
+1. `mkdir credentials; cd credentials; mkdir certs wolfssl; cd ..`
 4. in `credentials` folder, create `credentials.sh` as follows:
    ```bash
    export WIFI_SSID=<wifi SSID>
