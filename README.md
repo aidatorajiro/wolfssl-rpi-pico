@@ -36,6 +36,7 @@ for others,
 
 1. Apply `liboqs-pico-patch.patch` in liboqs.  
    `cd liboqs; git reset --hard; patch -p1 ../liboqs-pico-patch.patch`
+2. copy `pico_extras_import.cmake` and `pico_sdk_import.cmake` to liboqs.
 2. run `sh build-oqs.sh`
 
 ## license informations
