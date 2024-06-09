@@ -352,7 +352,7 @@ extern time_t myTime(time_t *);
 
 #undef DEBUG_WOLFSSL
 #undef NO_ERROR_STRINGS
-#if 1
+#if 0
 #define DEBUG_WOLFSSL
 #else
 #if 0

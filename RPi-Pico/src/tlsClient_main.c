@@ -200,18 +200,18 @@ int wolf_cb_TCPwrite(WOLFSSL *ssl, const unsigned char *buff, long unsigned int 
 {
     (void)ssl;
     unsigned long ret;
-    SOCKET_T sock = (SOCKET_T)ctx;
-    ret = send(sock, buff, len);
+    WOLF_SOCKET_T sock = (WOLF_SOCKET_T)ctx;
+    ret = wolf_TCPwrite(sock, buff, len);
     return ret;
 }
 
 int wolf_cb_TCPread(WOLFSSL *ssl, unsigned char *buff, long unsigned int len, void *ctx)
 {
     (void)ssl;
-    SOCKET_T sock = (SOCKET_T)ctx;
+    WOLF_SOCKET_T sock = (WOLF_SOCKET_T)ctx;
     int ret;
 
-    ret = recv(sock, buff, len);
+    ret = wolf_TCPread(sock, buff, len);
     return ret;
 }
 
@@ -223,7 +223,7 @@ void tlsClient_test(void)
     static char buffer[BUFF_SIZE];
     char msg[] = "Hello Server";
 
-    SOCKET_T sock;
+    WOLF_SOCKET_T sock;
     struct sockaddr_in servAddr;
 
     WOLFSSL_CTX *ctx    = NULL;
@@ -255,7 +255,7 @@ void tlsClient_test(void)
     wolfSSL_SetIORecv(ctx, (CallbackIORecv)wolf_cb_TCPread);
     wolfSSL_SetIOSend(ctx, (CallbackIOSend)wolf_cb_TCPwrite);
 
-    sock = socket();
+    sock = wolf_TCPsocket();
     if (!sock)
     {
         printf("ERROR:wolf_TCPsocke()\n");
@@ -266,12 +266,12 @@ void tlsClient_test(void)
     servAddr.sin_family = AF_INET;           /* using IPv4      */
     servAddr.sin_port = htons(TCP_PORT); /* on DEFAULT_PORT */
 
-    if (inet_pton(AF_INET, TEST_TCP_SERVER_IP, &servAddr.sin_addr) != 1) {
+    if (wolf_inet_pton(AF_INET, TEST_TCP_SERVER_IP, &servAddr.sin_addr) != 1) {
         fprintf(stderr, "ERROR: invalid address\n");
         goto exit;
     }
 
-    if (connect(sock,(struct sockaddr*) &servAddr, sizeof(servAddr)) != WOLF_SUCCESS) {
+    if (wolf_TCPconnect(sock,(struct sockaddr*) &servAddr, sizeof(servAddr)) != WOLF_SUCCESS) {
         printf("ERROR:wolf_TCPconnect()\n");
         goto exit;
     }

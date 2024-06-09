@@ -36,25 +36,6 @@
 #include "lwip/sockets.h"
 #include "lwip/inet.h"
 
-#if WOLF_SOCKET
-
-#undef  SOCKET_T
-#undef  socket
-#undef  close
-#undef  inet_pton
-#undef  connect
-#undef  recv
-#undef  send
-#define SOCKET_T  WOLF_SOCKET_T
-#define socket    wolf_TCPsocket
-#define close     wolf_TCPclose
-#define inet_pton wolf_inet_pton
-#define connect   wolf_TCPconnect
-#define recv      wolf_TCPread
-#define send      wolf_TCPwrite
-
-#endif
-
 #define DEBUG_printf printf
 #define BUF_SIZE (4096*2)
 
